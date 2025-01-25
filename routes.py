@@ -1,7 +1,6 @@
 from flask import Blueprint
 from controllers import *
 
-# Tworzenie Blueprint
 routes = Blueprint('routes', __name__)
 
 # Deklaracje tras

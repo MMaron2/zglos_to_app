@@ -6,7 +6,6 @@ from sqlalchemy import func
 UPLOAD_FOLDER = 'static/uploads/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-# Model użytkownika
 class Uzytkownicy(db.Model):
     __tablename__ = 'Uzytkownicy'
     ID_Uzytkownika = db.Column(db.Integer, primary_key=True)
@@ -34,7 +33,7 @@ class Zgloszenia(db.Model):
     ID_Uzytkownika = db.Column(db.Integer, db.ForeignKey('Uzytkownicy.ID_Uzytkownika'), nullable=True)  # Klucz obcy
     zdjecie_url = db.Column(db.String(2083), nullable=True)
 
-# Strona startowa
+# Przekierowanie na stronę logowania
 def load_start_page():
     return render_template('login.html')
 
