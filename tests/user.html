@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Witaj {{ user.Nazwa_Uzytkownika }}</title>
+</head>
+<body>
+    <h1>Witaj, {{ user.Nazwa_Uzytkownika }}!</h1>
+    <p>Email: {{ user.Email }}</p>
+    <p>Rola: {{ user.Rola }}</p>
+    <p>Data Rejestracji: {{ user.Data_Rejestracji }}</p>
+    <p>ID Nagrody: {{ user.ID_Nagrody }}</p>
+    <a href="/login">Wyloguj</a>
+</body>
+</html>

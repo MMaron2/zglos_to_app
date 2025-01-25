@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zgłoszenia Oczekujące</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            padding: 20px;
+            background-color: #5b5bff;
+            color: white;
+        }
+
+        .report-list {
+            margin-top: 20px;
+        }
+
+        .report {
+            background-color: #5b5bff;
+            color: white;
+            padding: 15px;
+            margin: 10px auto;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+            cursor: default;
+            text-align: left;
+            position: relative;
+        }
+
+        .report:hover {
+            opacity: 0.9;
+        }
+
+        .report-header {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .report-details {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .report-details span {
+            font-weight: bold;
+        }
+
+        .report-image {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .report-image img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 10px;
+        }
+
+        .action-buttons {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .action-button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .approve {
+            background-color: #4CAF50; /* Zielony */
+            color: white;
+        }
+
+        .approve:hover {
+            background-color: #45a049;
+        }
+
+        .reject {
+            background-color: #f44336; /* Czerwony */
+            color: white;
+        }
+
+        .reject:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista Zgłoszeń Oczekujących</h1>
+    <div class="report-list">
+        {% for report in reports %}
+        <div class="report">
+            <div class="report-header">
+                {{ report['Typ_Zgloszenia'] }} (ID: {{ report['ID_Zgloszenia'] }})
+            </div>
+            <div class="report-details">
+                <p><span>Opis:</span> {{ report['Opis'] }}</p>
+                <p><span>Lokalizacja:</span> {{ report['Lokalizacja_GPS'] }}</p>
+                <p><span>Data zgłoszenia:</span> {{ report['Data_Czas_Zgloszenia'] }}</p>
+            </div>
+            {% if report['zdjecie_url'] %}
+            <div class="report-image">
+                <img src="{{ url_for('static', filename=report['zdjecie_url']) }}" alt="Zdjęcie zgłoszenia">
+            </div>
+            {% endif %}
+            <div class="action-buttons">
+                <button class="action-button approve" onclick="changeStatus(`{{ report['ID_Zgloszenia'] }}`, 'zaakceptowane')">Zatwierdź</button>
+                <button class="action-button reject" onclick="changeStatus(`{{ report['ID_Zgloszenia'] }}`, 'odrzucone')">Odrzuć</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function changeStatus(reportId, status) {
+            fetch(`/change_status/${reportId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: status })
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload(); // Odśwież stronę po zmianie
+                } else {
+                    alert('Nie udało się zmienić statusu.');
+                }
+            })
+            .catch(error => console.error('Błąd:', error));
+        }
+    </script>
+</body>
+</html>

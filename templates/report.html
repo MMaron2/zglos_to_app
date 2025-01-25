@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zgłoś problem</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .corner-circle {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .circle-top-left {
+            width: 200px;
+            height: 200px;
+            background-color: #ffcc00;
+            top: -100px;
+            left: -100px;
+        }
+
+        .circle-bottom-right {
+            width: 300px;
+            height: 300px;
+            background-color: #5b5bff;
+            bottom: -150px;
+            right: -150px;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 1;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .file-input label {
+            background-color: #5b5bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .file-input input[type="file"] {
+            display: none;
+        }
+
+        .vehicle-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-option {
+            width: 80px;
+            height: 80px;
+            background-color: #5b5bff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .vehicle-option img {
+            width: 70%;
+            height: 70%;
+        }
+
+        .vehicle-option:hover {
+            transform: scale(1.1);
+        }
+
+        .vehicle-option.selected {
+            background-color: #ffcc00;
+        }
+
+        .description-input {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .description-input textarea {
+            width: 80%;
+            max-width: 500px;
+            height: 100px;
+            padding: 10px;
+            border: 2px solid #5b5bff;
+            border-radius: 10px;
+            font-size: 14px;
+            resize: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #5b5bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+    <script>
+        function selectVehicle(element) {
+            const options = document.querySelectorAll('.vehicle-option');
+            options.forEach(option => option.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('vehicle_type').value = element.dataset.vehicle;
+        }
+
+        function validateForm() {
+            const vehicleType = document.getElementById('vehicle_type').value;
+            const photo = document.getElementById('photo').files[0];
+
+            if (!vehicleType || !photo) {
+                alert('Proszę wybrać typ pojazdu i dodać zdjęcie!');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="corner-circle circle-top-left"></div>
+    <div class="corner-circle circle-bottom-right"></div>
+
+    <div class="container">
+        <h1>Zgłoś problem</h1>
+        <form action="/submit_report" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <div class="file-input">
+                <label for="photo">Wybierz zdjęcie</label>
+                <input type="file" id="photo" name="photo" accept="image/*">
+            </div>
+
+            <div class="description-input">
+                <textarea id="description" name="description" placeholder="Wprowadź opis zgłoszenia"></textarea>
+            </div>
+
+            <div class="vehicle-options">
+                <div class="vehicle-option" data-vehicle="rower" onclick="selectVehicle(this)">
+                    <img src="/static/images/cat_bike.png" alt="Rower">
+                </div>
+                <div class="vehicle-option" data-vehicle="auto" onclick="selectVehicle(this)">
+                    <img src="/static/images/cat_car.png" alt="Auto">
+                </div>
+                <div class="vehicle-option" data-vehicle="hulajnoga" onclick="selectVehicle(this)">
+                    <img src="/static/images/silver_badge.png" alt="Hulajnoga">
+                </div>
+            </div>
+
+            <input type="hidden" id="vehicle_type" name="vehicle_type">
+            <button type="submit">Zgłoś</button>
+        </form>
+    </div>
+</body>
+</html>

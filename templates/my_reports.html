@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moje Zgłoszenia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .report-container {
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            overflow-y: auto; /* Dodano przewijanie */
+            flex-grow: 1; /* Wypełnia wolne miejsce */
+            margin-bottom: 20px; /* Odstęp między zgłoszeniami a przyciskiem */
+            border: 1px solid #ddd; /* Opcjonalnie dla wizualizacji */
+            border-radius: 10px;
+            background-color: #fff; /* Tło dla przewijanego obszaru */
+            padding: 10px; /* Wewnętrzne odstępy */
+        }
+
+        .report {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #5b5bff;
+            color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 20px;
+        }
+
+        .status-icon {
+            width: 30px;
+            height: 30px;
+        }
+
+        button {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        /* Stylizacja przycisku Powrót */
+        .footer-button button {
+            background-color: #ffcc00; /* Żółty kolor */
+            color: #333; /* Ciemny tekst dla lepszej czytelności */
+        }
+
+        /* Stylizacja kolorowych okręgów */
+        .corner-circle {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .circle-top-left {
+            width: 200px;
+            height: 200px;
+            background-color: #ffcc00;
+            top: -100px;
+            left: -100px;
+        }
+
+        .circle-bottom-right {
+            width: 300px;
+            height: 300px;
+            background-color: #5b5bff;
+            bottom: -150px;
+            right: -150px;
+        }
+
+        .footer-button {
+            position: absolute;
+            bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Okręgi w rogach -->
+    <div class="corner-circle circle-top-left"></div>
+    <div class="corner-circle circle-bottom-right"></div>
+
+    <div class="main-container">
+        <h2>Moje Zgłoszenia</h2>
+
+        <!-- Lista zgłoszeń -->
+        <div class="report-container">
+            {% if reports %}
+                {% for report in reports %}
+                <div class="report">
+                    <span>{{ report['Opis'] }}</span>
+                    <img
+                    src="{% if report['Status'] == 'oczekujące' %}
+                        /static/images/dots.png
+                     {% elif report['Status'] == 'odrzucone' %}
+                        /static/images/red_x.png
+                     {% elif report['Status'] == 'zaakceptowane' %}
+                        /static/images/green_check.png
+                     {% endif %}"
+                    alt="Status" class="status-icon">
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Brak zgłoszeń do wyświetlenia.</p>
+            {% endif %}
+        </div>
+
+        <!-- Przycisk powrotu -->
+        <div class="footer-button">
+            <button onclick="location.href='/dashboard';">Powrót do Dashboard</button>
+        </div>
+    </div>
+</body>
+</html>

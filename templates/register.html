@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejestracja</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: #f9f9f9;
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+        }
+
+        .corner-circle {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .circle-top-left {
+            width: 300px;
+            height: 300px;
+            background-color: #5b5bff;
+            top: -150px;
+            left: -150px;
+        }
+
+        .circle-bottom-right {
+            width: 400px;
+            height: 400px;
+            background-color: #ffcc00;
+            bottom: -100px;
+            right: -100px;
+        }
+
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #5b5bff;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #5b5bff;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="text"]:focus {
+            border-color: #ffcc00;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #ffcc00;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e6b800;
+        }
+
+        .register-image {
+            margin-top: 20px;
+        }
+
+        .register-image img {
+            width: 100px;
+            height: auto;
+        }
+
+        .back-link {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #5b5bff;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .response-message {
+            margin-top: 10px;
+            font-size: 14px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="corner-circle circle-top-left"></div>
+    <div class="corner-circle circle-bottom-right"></div>
+
+    <div class="container">
+        <h1>Rejestracja</h1>
+        <div class="form" >
+            <input type="text" id="username" name="username" placeholder="Nazwa użytkownika" required>
+            <input type="email"  id="email"  name="email" placeholder="e-mail" required>
+            <input type="password"  id="password" name="password" placeholder="Hasło" required>
+            <input type="password" id="re_password"  name="repeat_password" placeholder="Powtórz hasło" required>
+            <div><button type="submit" onclick="submitReport()" >ZAREJESTRUJ SIĘ</button></div>
+        </div>
+        <div class="response-message" id="responseMessage"></div>
+        <div class="register-image">
+            <img src="/static/images/cat_register.png" alt="Kot">
+        </div>
+        <a href="/" class="back-link">Powrót do logowania</a>
+    </div>
+
+    <script>
+        // Obsługa odpowiedzi serwera
+        async function submitReport() {
+    // Pobranie wartości z formularza
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const Repassword = document.getElementById('re_password').value;
+
+
+    // Przygotowanie danych do przesłania
+    formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);        
+    formData.append('password', password);
+    formData.append('re_password', Repassword);
+  
+
+    try {
+        // Wysłanie żądania do serwera
+        const response = await fetch('/submit_register', {
+            method: 'POST',
+            body: formData
+        });
+
+        // Sprawdzenie odpowiedzi serwera
+        if (response.ok) {
+            const result = await response.json();
+            alert(result.message || 'Zgłoszenie zostało przesłane!');
+        } else {
+            const error = await response.json();
+            alert(error.error || 'Wystąpił błąd podczas przesyłania.');
+        }
+    } catch (error) {
+        console.error('Błąd:', error);
+        alert('Wystąpił błąd podczas komunikacji z serwerem.');
+    }
+}
+    </script>
+</body>
+</html>

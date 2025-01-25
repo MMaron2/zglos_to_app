@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odznaki</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .badge-container {
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .badge {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #5b5bff;
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge img {
+            width: 80px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .progress {
+            margin-top: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #5b5bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        /* Stylizacja kolorowych okręgów */
+        .corner-circle {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .circle-top-left {
+            width: 200px;
+            height: 200px;
+            background-color: #ffcc00;
+            top: -100px;
+            left: -100px;
+        }
+
+        .circle-bottom-right {
+            width: 300px;
+            height: 300px;
+            background-color: #5b5bff;
+            bottom: -150px;
+            right: -150px;
+        }
+
+        /* Responsywność */
+        @media (max-width: 768px) {
+            .badge img {
+                width: 60px;
+            }
+
+            .progress {
+                font-size: 14px;
+            }
+
+            .circle-top-left {
+                width: 150px;
+                height: 150px;
+                top: -75px;
+                left: -75px;
+            }
+
+            .circle-bottom-right {
+                width: 200px;
+                height: 200px;
+                bottom: -100px;
+                right: -100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .badge img {
+                width: 50px;
+            }
+
+            .progress {
+                font-size: 12px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Okręgi w rogach -->
+    <div class="corner-circle circle-top-left"></div>
+    <div class="corner-circle circle-bottom-right"></div>
+
+    <div class="badge-container">
+        <!-- Brązowa odznaka -->
+        <div class="badge">
+            <img src="/static/images/cat_bike.png" alt="Brązowa odznaka">
+            <h3>Brązowa</h3>
+            <p class="progress">
+                {{ progress.get('rower', 0) }}/10 rowerów
+            </p>
+            {% if progress.get('rower', 0) >= 10 %}
+            <p><strong>Zdobyta!</strong></p>
+            {% endif %}
+        </div>
+
+        <!-- Srebrna odznaka -->
+        <div class="badge">
+            <img src="/static/images/cat_car.png">
+            <img src="/static/images/cat_bike.png" alt="Kot na rowerze">
+            <h3>Srebrna</h3>
+            <p class="progress">       
+                {{ progress.get('rower', 0) }}/10 rowerów
+                <br>
+                {{ progress.get('auto', 0) }}/10 samochodów 
+            </p>
+            {% if progress.get('rower', 0) >= 10 and progress.get('auto', 0) >= 10 %}
+            <p><strong>Zdobyta!</strong></p>
+            {% endif %}
+        </div>
+
+        <!-- Złota odznaka -->
+        <div class="badge">
+            <img src="/static/images/silver_badge.png">
+            <img src="/static/images/cat_bike.png">
+            <img src="/static/images/cat_car.png">
+            <h3>Złota</h3>
+            <p class="progress">
+                {{ progress.get('rower', 0) }}/10 rowerów
+                <br>
+                {{ progress.get('hulajnoga', 0) }}/10 hulajnóg
+                <br>
+                {{ progress.get('auto', 0) }}/10 samochodów 
+            </p>
+            {% if progress.get('rower', 0) >= 10 and progress.get('auto', 0) >= 10 and progress.get('hulajnoga', 0) >= 10 %}
+            <p><strong>Zdobyta!</strong></p>
+            {% endif %}
+        </div>
+
+        <button onclick="location.href='/dashboard';">Powrót</button>
+    </div>
+</body>
+</html>

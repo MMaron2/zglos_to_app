@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sukces zgłoszenia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+            position: relative; /* Aby umożliwić pozycjonowanie absolutne */
+            overflow: hidden; /* Ukrycie wychodzących elementów */
+        }
+
+        .success-container {
+            text-align: center;
+            z-index: 1; /* Zapewnienie, że treść znajduje się nad okręgami */
+        }
+
+        .success-container img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #5b5bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        /* Stylizacja kolorowych okręgów w rogach */
+        .corner-circle {
+            position: absolute;
+            border-radius: 50%;
+            z-index: 0; /* Zapewnienie, że znajdują się za treścią */
+        }
+
+        .circle-top-left {
+            width: 200px;
+            height: 200px;
+            background-color: #ffcc00;
+            top: -100px;
+            left: -100px;
+        }
+
+        .circle-bottom-right {
+            width: 300px;
+            height: 300px;
+            background-color: #5b5bff;
+            bottom: -150px;
+            right: -150px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Okręgi w rogach -->
+    <div class="corner-circle circle-top-left"></div>
+    <div class="corner-circle circle-bottom-right"></div>
+
+    <div class="success-container">
+        <img src="/static/images/success_icon.png" alt="Sukces">
+        <h2>Dobra robota obywatelu!</h2>
+        <p>Twoje zgłoszenie jest właśnie baczenie obserwowane przez służby.</p>
+        <button onclick="location.href='/dashboard';">Powrót</button>
+    </div>
+</body>
+</html>
